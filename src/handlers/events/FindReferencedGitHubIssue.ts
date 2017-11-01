@@ -42,9 +42,9 @@ subscription FindReferencedGitHubIssue {
 const Pattern = /[cC]rush(ed|ing)[\s]*#([0-9]*)/g;
 
 @EventHandler("Find referenced GitHub issues and PRs in commit message", Subscription)
-export class FindReferencedGitHubIssue implements HandleEvent<Commit> {
+export class FindReferencedGitHubIssue implements HandleEvent<Commits> {
 
-    public handle(event: EventFired<Commit>, ctx: HandlerContext): Promise<HandlerResult> {
+    public handle(event: EventFired<Commits>, ctx: HandlerContext): Promise<HandlerResult> {
         const commit = event.data.Commit[0];
 
         const referencedIssues: string[] = [];
@@ -56,8 +56,8 @@ export class FindReferencedGitHubIssue implements HandleEvent<Commit> {
 
         if (referencedIssues.length > 0 && commit.repo && commit.repo.channels) {
             return ctx.messageClient.addressChannels(`You crushed ${referencedIssues.join(", ")} with commit`+
-                ` \`${commit.repo.owner}/${commit.repo.name}@${commit.sha.slice(0, 7)}\``
-                , commit.repo.channels.map(c => c.name))
+                    ` \`${commit.repo.owner}/${commit.repo.name}@${commit.sha.slice(0, 7)}\``,
+                    commit.repo.channels.map(c => c.name))
                 .then(() => Success)
                 .catch(err => failure(err));
         } else {
@@ -66,7 +66,7 @@ export class FindReferencedGitHubIssue implements HandleEvent<Commit> {
     }
 }
 
-export interface Commit {
+export interface Commits {
     Commit: [{
         sha: string;
         message: string;
