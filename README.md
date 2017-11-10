@@ -111,7 +111,7 @@ You will need to install [node][] to build and test this project.
 
 ### Build and Test
 
-Command | Reason
+Command | Description
 ------- | ------
 `npm install` | to install all the required packages
 `npm start` | to start the Atomist automation client
