@@ -95,15 +95,6 @@ in the form `#N`, replacing `N` with the number of the issue.  Once
 you push that commit, the bot should message you letting you know you
 crushed it!
 
-## Dashboard and GraphQL data explorer
-
-When the automation client has successfully established a connection
-to the Atomist API server, the Dashboard (work-in-progress) and
-GraphQL data explorer will be available.
-
-*   Dashboard: http://localhost:2866
-*   GraphQL Data Explorer: http://localhost:2866/graphql
-
 ## Support
 
 General support questions should be discussed in the `#support`

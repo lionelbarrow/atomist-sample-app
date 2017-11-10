@@ -46,20 +46,17 @@ export class FindReferencedGitHubIssue implements HandleEvent<Commits> {
 
     public handle(event: EventFired<Commits>, ctx: HandlerContext): Promise<HandlerResult> {
         const commit = event.data.Commit[0];
-
         const referencedIssues: string[] = [];
-
         let match;
         while (match = Pattern.exec(commit.message)) {
             referencedIssues.push(`#${match[2]}`);
         }
-
         if (referencedIssues.length > 0 && commit.repo && commit.repo.channels) {
-            return ctx.messageClient.addressChannels(`You crushed ${referencedIssues.join(", ")} with commit` +
-                    ` \`${commit.repo.owner}/${commit.repo.name}@${commit.sha.slice(0, 7)}\``,
-                    commit.repo.channels.map(c => c.name))
-                .then(() => Success)
-                .catch(err => failure(err));
+            const msg = `You crushed ${referencedIssues.join(", ")} with commit` +
+                ` \`${commit.repo.owner}/${commit.repo.name}@${commit.sha.slice(0, 7)}\``;
+            const channels = commit.repo.channels.map(c => c.name);
+            return ctx.messageClient.addressChannels(msg, channels)
+                .then(() => Success, failure);
         } else {
             return Promise.resolve(Success);
         }
