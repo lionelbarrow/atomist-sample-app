@@ -16,6 +16,8 @@
 
 import { Configuration } from "@atomist/automation-client/configuration";
 import * as appRoot from "app-root-path";
+import { HelloWorld } from "./handlers/commands/HelloWorld";
+import { FindReferencedGitHubIssue } from "./handlers/events/FindReferencedGitHubIssue";
 
 // tslint:disable-next-line:no-var-requires
 const pj = require(`${appRoot.path}/package.json`);
@@ -26,6 +28,12 @@ export const configuration: Configuration = {
     name: pj.name,
     version: pj.version,
     teamIds: [], // <-- run @atomist pwd in your slack team to obtain the team id
+    commands: [
+        () => new HelloWorld(),
+    ],
+    events: [
+        () => new FindReferencedGitHubIssue(),
+    ],
     token,
     http: {
         enabled: true,

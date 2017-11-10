@@ -1,5 +1,5 @@
 {
-  "name": "@atomist/event-handler",
+  "name": "@atomist/cd-handler",
   "version": "0.1.0",
   "description": "Atomist event handler example",
   "author": "Atomist",
@@ -18,7 +18,8 @@
     "url": "https://github.com/atomist-blogs/event-handler/issues"
   },
   "dependencies": {
-    "@atomist/automation-client": "https://atomist.jfrog.io/atomist/npm-dev/@atomist/automation-client/-/@atomist/automation-client-0.2.6-20171101154408.tgz",
+    "@atomist/automation-client": "^0.5.0",
+    "@atomist/slack-messages": "^0.12.1",
     "app-root-path": "^2.0.1"
   },
   "devDependencies": {
@@ -55,7 +56,7 @@
     "compile:gql": "copyfiles './src/**/*.graphql' ./build",
     "compile:ts": "tsc --project .",
     "fmt": "tsfmt --replace",
-    "git:info": "git-info",
+    "git:info": "atomist git",
     "gql:gen": "gql-gen --file node_modules/@atomist/automation-client/graph/schema.cortex.json --template typescript -m --out ./src/typings/ './graphql/**/*.graphql'",
     "lint": "tslint --format verbose --project . --exclude '{build,node_modules}/**' '**/*.ts'",
     "lint:fix": "npm run lint -- --fix",
