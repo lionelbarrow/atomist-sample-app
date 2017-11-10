@@ -55,7 +55,7 @@ export class FindReferencedGitHubIssue implements HandleEvent<Commits> {
         }
 
         if (referencedIssues.length > 0 && commit.repo && commit.repo.channels) {
-            return ctx.messageClient.addressChannels(`You crushed ${referencedIssues.join(", ")} with commit`+
+            return ctx.messageClient.addressChannels(`You crushed ${referencedIssues.join(", ")} with commit` +
                     ` \`${commit.repo.owner}/${commit.repo.name}@${commit.sha.slice(0, 7)}\``,
                     commit.repo.channels.map(c => c.name))
                 .then(() => Success)
@@ -77,5 +77,5 @@ export interface Commits {
                 name: string;
             }]
         }
-    }]
+    }];
 }

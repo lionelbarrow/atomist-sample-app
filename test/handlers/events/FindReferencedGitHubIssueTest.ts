@@ -17,9 +17,12 @@
 import "mocha";
 import * as assert from "power-assert";
 
+import { LoggingConfig } from "@atomist/automation-client/internal/util/logger";
 import { MessageOptions } from "@atomist/automation-client/spi/message/MessageClient";
 import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
 import { FindReferencedGitHubIssue } from "../../../src/handlers/events/FindReferencedGitHubIssue";
+
+LoggingConfig.format = "cli";
 
 describe("FindReferencedGitHubIssue", () => {
 
@@ -30,29 +33,32 @@ describe("FindReferencedGitHubIssue", () => {
             addressChannels(msg: string | SlackMessage,
                             channelNames: string | string[],
                             options?: MessageOptions): Promise<any> {
-                assert.deepEqual(channelNames,["general"]);
+                assert.deepEqual(channelNames, ["general"]);
                 assert(msg === "You crushed #433 with commit `atomist-blogs/event-handler@sfs24wf`");
                 return Promise.resolve();
-            }
+            },
         };
 
         const ctx: any = {
             messageClient: mockMessageClient,
-        }
+        };
 
-        const payload: any = { data: {
-            Commit: [{
-                sha: "sfs24wfhasghajae",
-                message: "With this commit I really crushed #433, don't you think?",
-                repo: {
-                    owner: "atomist-blogs",
-                    name: "event-handler",
-                    channels: [{
-                        name: "general",
-                    }],
+        const payload: any = {
+            data: {
+                Commit: [{
+                    sha: "sfs24wfhasghajae",
+                    message: "With this commit I really crushed #433, don't you think?",
+                    repo: {
+                        owner: "atomist-blogs",
+                        name: "event-handler",
+                        channels: [{
+                            name: "general",
+                        }],
+                    },
                 },
+                ],
             },
-        ]}};
+        };
 
         findIssue.handle(payload, ctx)
             .then(result => {
@@ -68,26 +74,29 @@ describe("FindReferencedGitHubIssue", () => {
                             options?: MessageOptions): Promise<any> {
                 assert.fail("Shouldn't get called");
                 return Promise.resolve();
-            }
+            },
         };
 
         const ctx: any = {
             messageClient: mockMessageClient,
-        }
+        };
 
-        const payload: any = { data: {
-            Commit: [{
-                sha: "sfs24wfhasghajae",
-                message: "With this commit I really didn't crush anything",
-                repo: {
-                    owner: "atomist-blogs",
-                    name: "event-handler",
-                    channels: [{
-                        name: "general",
-                    }],
+        const payload: any = {
+            data: {
+                Commit: [{
+                    sha: "sfs24wfhasghajae",
+                    message: "With this commit I really didn't crush anything",
+                    repo: {
+                        owner: "atomist-blogs",
+                        name: "event-handler",
+                        channels: [{
+                            name: "general",
+                        }],
+                    },
                 },
+                ],
             },
-        ]}};
+        };
 
         findIssue.handle(payload, ctx)
             .then(result => {
