@@ -1,5 +1,5 @@
 {
-  "name": "@atomist/cd-handler",
+  "name": "@atomist/event-handler",
   "version": "0.1.0",
   "description": "Atomist event handler example",
   "author": "Atomist",
